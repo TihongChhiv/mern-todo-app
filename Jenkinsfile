@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'docker:24.0.7-cli'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     stages {
 
@@ -11,13 +16,13 @@ pipeline {
 
         stage('Containerise') {
             steps {
-                sh 'sudo docker build -t tihong88/mern-todo-app:latest .'
+                sh 'docker build -t tihong88/mern-todo-app:latest .'
             }
         }
 
         stage('Push') {
             steps {
-                sh 'sudo docker push tihong88/mern-todo-app:latest'
+                sh 'docker push tihong88/mern-todo-app:latest'
             }
         }
 
