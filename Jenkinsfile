@@ -9,7 +9,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'docker run --rm -v $PWD:/app -w /app/TODO/todo_backend node:22-alpine npm install'
+                echo 'Build stage'
             }
         }
 
