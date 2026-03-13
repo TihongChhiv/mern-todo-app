@@ -2,16 +2,14 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "tihongchhiv/mern-todo-app"
+        IMAGE_NAME = "tihong88/mern-todo-app"
     }
 
     stages {
 
         stage('Build') {
             steps {
-                dir('TODO/todo_backend') {
-                    sh 'npm install'
-                }
+                sh 'docker run --rm -v $PWD:/app -w /app/TODO/todo_backend node:22-alpine npm install'
             }
         }
 
@@ -23,10 +21,7 @@ pipeline {
 
         stage('Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    sh 'echo $PASS | docker login -u $USER --password-stdin'
-                    sh 'docker push $IMAGE_NAME:latest'
-                }
+                sh 'docker push $IMAGE_NAME:latest'
             }
         }
 
